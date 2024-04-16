@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Music Player</title>
+  <script src="howler.js-master/dist/howler.js"></script>
+  <style>
+    body {
+      background-color: hsl(210, 6%, 12%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #8a8a8a;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background-color: #2a2c2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      width: 50%;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    h2,
+    h3,
+    button {
+      color: #eaca4c;
+    }
+
+    h1,
+    h4 {
+      color: #d2d1d1;
+      display: inline;
+    }
+
+    button {
+      background-color: #0a0c0d;
+      border: none;
+      padding: 10px;
+      margin: 5px;
+      font-size: 18px;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: #eaca4c;
+      color: #0a0c0d;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Tanur's files</h1>
+  <div class="card">
+
+    <h2>Barry Bonds - Kanye West</h2>
+
+    <table>
+      <tr>
+        <td>
+          <h4>Drum loop (normal tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play1"></button>
+            <button id="btn-pause1"></button>
+            <button id="btn-stop1"></button>
+          </section>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h4>Loop w/ guitar part (normal tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play2"></button>
+            <button id="btn-pause2"></button>
+            <button id="btn-stop2"></button>
+          </section>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h4>Drum loop (slower tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play3"></button>
+            <button id="btn-pause3"></button>
+            <button id="btn-stop3"></button>
+          </section>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h4>Loop w/ guitar part (slower tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play4"></button>
+            <button id="btn-pause4"></button>
+            <button id="btn-stop4"></button>
+          </section>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+  <script>
+    var currentSound = null;
+
+    function setupHowl(src, idPlay, idPause, idStop) {
+      var sound = new Howl({
+        src: [src],
+        loop: true
+      });
+
+      document.getElementById(idPlay).addEventListener("click", function() {
+        if (currentSound) {
+          currentSound.stop();
+        }
+        sound.play();
+        currentSound = sound;
+      });
+      document.getElementById(idPause).addEventListener("click", function() {
+        sound.pause();
+      });
+      document.getElementById(idStop).addEventListener("click", function() {
+        sound.stop();
+        if (currentSound === sound) {
+          currentSound = null;
+        }
+      });
+
+      document.getElementById(idPlay).innerHTML = '&#9658;'; // play 
+      document.getElementById(idPause).innerHTML = '&#10074;&#10074;'; // pause
+      document.getElementById(idStop).innerHTML = '&#9724;'; // stop
+    }
+
+    setupHowl("assets/Barry Bonds drum-loop.mp3", "btn-play1", "btn-pause1", "btn-stop1");
+    setupHowl("assets/Barry Bonds loop-w-gtr.mp3", "btn-play2", "btn-pause2", "btn-stop2");
+    setupHowl("assets/Barry Bonds drum-loop-slow.mp3", "btn-play3", "btn-pause3", "btn-stop3");
+    setupHowl("assets/Barry Bonds loop-w-gtr-slow.mp3", "btn-play4", "btn-pause4", "btn-stop4");
+  </script>
+</body>
+
+</html>
