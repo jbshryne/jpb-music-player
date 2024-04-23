@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Aliza - Music Player</title>
+  <script src="howler.js-master/dist/howler.js"></script>
+  <style>
+    body {
+      background-color: hsl(210, 6%, 12%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #8a8a8a;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background-color: #2a2c2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px;
+      width: 50%;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    h2,
+    button {
+      color: #eaca4c;
+    }
+
+    h1,
+    h3,
+    h4 {
+      color: #d2d1d1;
+      display: inline;
+    }
+
+    button {
+      background-color: #0a0c0d;
+      border: none;
+      padding: 10px;
+      margin: 5px;
+      font-size: 18px;
+      text-align: center;
+      border-radius: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: #eaca4c;
+      color: #0a0c0d;
+    }
+  </style>
+</head>
+
+<body>
+  <h2 style="color: white">Aliza</h2>
+  <div class="card">
+
+    <h2>Other Side - Greatest Showman</h2>
+    <table>
+      <tr>
+        <td>
+          <h4>Verse & Chorus (w/ piano, normal tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play5"></button>
+            <button id="btn-pause5"></button>
+            <button id="btn-stop5"></button>
+          </section>
+        </td>
+      </tr>
+    </table>
+
+    <h3>Chorus</h3>
+    <table>
+
+      <tr>
+        <td>
+          <h4>w/ LH only (slower tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play6"></button>
+            <button id="btn-pause6"></button>
+            <button id="btn-stop6"></button>
+          </section>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h4>w/ RH only (slower tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play7"></button>
+            <button id="btn-pause7"></button>
+            <button id="btn-stop7"></button>
+          </section>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h4>No piano (slower tempo)</h4>
+        </td>
+        <td>
+          <section class="play-controls">
+            <button id="btn-play8"></button>
+            <button id="btn-pause8"></button>
+            <button id="btn-stop8"></button>
+          </section>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+
+
+  <script>
+    var currentSound = null;
+
+    function setupHowl(src, idPlay, idPause, idStop) {
+      var sound = new Howl({
+        src: [src],
+        loop: true
+      });
+
+      document.getElementById(idPlay).addEventListener("click", function() {
+        if (currentSound?.playing()) {
+          currentSound.stop();
+        }
+        sound.play();
+        currentSound = sound;
+      });
+      document.getElementById(idPause).addEventListener("click", function() {
+        sound.pause();
+      });
+      document.getElementById(idStop).addEventListener("click", function() {
+        sound.stop();
+        if (currentSound === sound) {
+          currentSound = null;
+        }
+      });
+
+      document.getElementById(idPlay).innerHTML = '&#9658;'; // play 
+      document.getElementById(idPause).innerHTML = '&#10074;&#10074;'; // pause
+      document.getElementById(idStop).innerHTML = '&#9724;'; // stop
+    }
+
+    setupHowl("assets/Other Side full, with piano, normal tempo.mp3", "btn-play5", "btn-pause5", "btn-stop5");
+    setupHowl("assets/Other Side chorus, LH only.mp3", "btn-play6", "btn-pause6", "btn-stop6");
+    setupHowl("assets/Other Side chorus, RH only.mp3", "btn-play7", "btn-pause7", "btn-stop7");
+    setupHowl("assets/Other Side chorus, just drums, slower.mp3", "btn-play8", "btn-pause8", "btn-stop8");
+  </script>
+</body>
+
+</html>
