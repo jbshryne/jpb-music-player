@@ -61,7 +61,7 @@
 </head>
 
 <body>
-  <h2 style="color: white">Tanur</h2>
+  <h2 style="color: white">Tanur's files</h2>
   <div class="card">
 
     <h2>Barry Bonds - Kanye West</h2>
@@ -140,13 +140,15 @@
       });
 
       document.getElementById(idPause).addEventListener("click", function() {
-        // console.log(currentSound?._src === sound._src, !currentSound?.playing())
-        // if (currentSound?._src === sound._src && !currentSound?.playing()) {
+        // console.log(currentSound === sound, !currentSound.playLock)
+        // if (currentSound === sound && !currentSound.playLock) {
         //   console.log("play again?")
+        //   // console.log(currentSound.play)
         //   sound.play();
         // }
         sound.pause();
       });
+
       document.getElementById(idStop).addEventListener("click", function() {
         sound.stop();
         if (currentSound === sound) {

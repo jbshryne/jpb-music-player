@@ -4,6 +4,7 @@
 <head>
   <title>Aliza - Music Player</title>
   <script src="howler.js-master/dist/howler.js"></script>
+  <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
   <style>
     body {
       background-color: hsl(210, 6%, 12%);
@@ -61,7 +62,7 @@
 </head>
 
 <body>
-  <h2 style="color: white">Aliza</h2>
+  <h2 style="color: white">Aliza's files</h2>
   <div class="card">
 
     <h2>Other Side - Greatest Showman</h2>
@@ -72,9 +73,9 @@
         </td>
         <td>
           <section class="play-controls">
-            <button id="btn-play5"></button>
-            <button id="btn-pause5"></button>
-            <button id="btn-stop5"></button>
+            <button id="btn-play1"></button>
+            <button id="btn-pause1"></button>
+            <button id="btn-stop1"></button>
           </section>
         </td>
       </tr>
@@ -85,47 +86,45 @@
 
       <tr>
         <td>
-          <h4>w/ LH only (slower tempo)</h4>
+          <h4>w/ LH loud (slower tempo)</h4>
         </td>
         <td>
           <section class="play-controls">
-            <button id="btn-play6"></button>
-            <button id="btn-pause6"></button>
-            <button id="btn-stop6"></button>
+            <button id="btn-play2"></button>
+            <button id="btn-pause2"></button>
+            <button id="btn-stop2"></button>
           </section>
         </td>
       </tr>
 
       <tr>
         <td>
-          <h4>w/ RH only (slower tempo)</h4>
+          <h4>w/ RH loud (slower tempo)</h4>
         </td>
         <td>
           <section class="play-controls">
-            <button id="btn-play7"></button>
-            <button id="btn-pause7"></button>
-            <button id="btn-stop7"></button>
+            <button id="btn-play3"></button>
+            <button id="btn-pause3"></button>
+            <button id="btn-stop3"></button>
           </section>
         </td>
       </tr>
 
       <tr>
         <td>
-          <h4>No piano (slower tempo)</h4>
+          <h4>Quiet piano (slower tempo)</h4>
         </td>
         <td>
           <section class="play-controls">
-            <button id="btn-play8"></button>
-            <button id="btn-pause8"></button>
-            <button id="btn-stop8"></button>
+            <button id="btn-play4"></button>
+            <button id="btn-pause4"></button>
+            <button id="btn-stop4"></button>
           </section>
         </td>
       </tr>
     </table>
 
   </div>
-
-
 
   <script>
     var currentSound = null;
@@ -143,9 +142,11 @@
         sound.play();
         currentSound = sound;
       });
+
       document.getElementById(idPause).addEventListener("click", function() {
         sound.pause();
       });
+
       document.getElementById(idStop).addEventListener("click", function() {
         sound.stop();
         if (currentSound === sound) {
@@ -158,10 +159,10 @@
       document.getElementById(idStop).innerHTML = '&#9724;'; // stop
     }
 
-    setupHowl("assets/Other Side full, with piano, normal tempo.mp3", "btn-play5", "btn-pause5", "btn-stop5");
-    setupHowl("assets/Other Side chorus, LH only.mp3", "btn-play6", "btn-pause6", "btn-stop6");
-    setupHowl("assets/Other Side chorus, RH only.mp3", "btn-play7", "btn-pause7", "btn-stop7");
-    setupHowl("assets/Other Side chorus, just drums, slower.mp3", "btn-play8", "btn-pause8", "btn-stop8");
+    setupHowl("assets/Other Side full, with piano, normal tempo.mp3", "btn-play1", "btn-pause1", "btn-stop1");
+    setupHowl("assets/Other Side chorus, LH only.mp3", "btn-play2", "btn-pause2", "btn-stop2");
+    setupHowl("assets/Other Side chorus, RH only.mp3", "btn-play3", "btn-pause3", "btn-stop3");
+    setupHowl("assets/Other Side chorus, just drums, slower.mp3", "btn-play4", "btn-pause4", "btn-stop4");
   </script>
 </body>
 
