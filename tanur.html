@@ -4,6 +4,7 @@
 <head>
   <title>Tanur - Music Player</title>
   <script src="howler.js-master/dist/howler.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <style>
     body {
       background-color: hsl(210, 6%, 12%);
@@ -11,7 +12,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
       margin: 0;
       color: #8a8a8a;
       font-family: Arial, sans-serif;
@@ -25,7 +25,7 @@
       border-radius: 10px;
       padding: 20px;
       margin: 20px;
-      width: 50%;
+      min-width: 50%;
       box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     }
 
@@ -38,7 +38,7 @@
     h3,
     h4 {
       color: #d2d1d1;
-      display: inline;
+      /* display: inline; */
     }
 
     button {
@@ -62,184 +62,139 @@
 
 <body>
   <h2 style="color: white">Tanur's files</h2>
-  <div class="card">
-
-    <h2>Barry Bonds - Kanye West</h2>
-    <h3>Main groove [Drums]</h3>
-    <table>
-      <tr>
-        <td>
-          <h4>Drum loop (normal tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play1"></button>
-            <button id="btn-pause1"></button>
-            <button id="btn-stop1"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>Loop w/ guitar part (normal tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play2"></button>
-            <button id="btn-pause2"></button>
-            <button id="btn-stop2"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>Drum loop (slower tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play3"></button>
-            <button id="btn-pause3"></button>
-            <button id="btn-stop3"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>Loop w/ guitar part (slower tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play4"></button>
-            <button id="btn-pause4"></button>
-            <button id="btn-stop4"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>
-            Loop w/ counting (slower tempo)
-          </h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play5"></button>
-            <button id="btn-pause5"></button>
-            <button id="btn-stop5"></button>
-          </section>
-        </td>
-      </tr>
-    </table>
-    <br>
-    <h3>Groove x2 into hook [Drums, Bass, Elec Piano, Synth Strs & Brass] </h3>
-    <table>
-      <tr>
-        <td>
-          <h4>No guitar (normal tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play6"></button>
-            <button id="btn-pause6"></button>
-            <button id="btn-stop6"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>With guitar (normal tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play7"></button>
-            <button id="btn-pause7"></button>
-            <button id="btn-stop7"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>No guitar (slower tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play8"></button>
-            <button id="btn-pause8"></button>
-            <button id="btn-stop8"></button>
-          </section>
-        </td>
-      </tr>
-
-      <tr>
-        <td>
-          <h4>With guitar (slower tempo)</h4>
-        </td>
-        <td>
-          <section class="play-controls">
-            <button id="btn-play9"></button>
-            <button id="btn-pause9"></button>
-            <button id="btn-stop9"></button>
-          </section>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <div id="musicContainer" class="card"></div>
 
   <script>
-    var currentSound = null;
-
-    function setupHowl(src, idPlay, idPause, idStop) {
-      var sound = new Howl({
-        src: [src],
-        loop: true
-      });
-
-      document.getElementById(idPlay).addEventListener("click", function() {
-        if (currentSound?.playing()) {
-          currentSound.stop();
+    $(document).ready(function() {
+      var songs = [{
+          title: "Barry Bonds - Kanye West",
+          sections: [{
+            description: "Main groove [Drums]",
+            soundFiles: [{
+                description: "Drum loop (normal tempo)",
+                src: "assets/Barry Bonds drum-loop.mp3"
+              },
+              {
+                description: "Loop w/ guitar part (normal tempo)",
+                src: "assets/Barry Bonds loop-w-gtr.mp3"
+              },
+              {
+                description: "Drum loop (slower tempo)",
+                src: "assets/Barry Bonds drum-loop-slow.mp3"
+              },
+              {
+                description: "Loop w/ guitar part (slower tempo)",
+                src: "assets/Barry Bonds loop-w-gtr-slow.mp3"
+              },
+              {
+                description: "Loop w/ counting (slower tempo)",
+                src: "assets/Barry Bonds loop-w-counting-slow.mp3"
+              }
+            ]
+          }, {
+            description: "Groove x2 into hook [Drums, Bass, Elec Piano, Synth Strs & Brass]",
+            soundFiles: [{
+                description: "No guitar (normal tempo)",
+                src: "assets/Barry Bonds to-hook-no-gtr.mp3"
+              },
+              {
+                description: "With guitar (normal tempo)",
+                src: "assets/Barry Bonds to-hook-w-gtr.mp3"
+              },
+              {
+                description: "No guitar (slower tempo)",
+                src: "assets/Barry Bonds to-hook-no-gtr-slow.mp3"
+              },
+              {
+                description: "With guitar (slower tempo)",
+                src: "assets/Barry Bonds to-hook-w-gtr-slow.mp3"
+              }
+            ]
+          }]
+        },
+        {
+          title: "Good Riddance (Time of Your Life) - Green Day",
+          sections: [{
+            soundFiles: [{
+              description: "Main chord sequence",
+              src: "assets/Green Day sequence.mp3"
+            }, {
+              description: "Full song",
+              src: "assets/Green Day full-song.mp3"
+            }]
+          }]
         }
-        sound.play();
-        currentSound = sound;
+      ];
+
+      songs.forEach(function(song, songIdx) {
+        var songTitle = '<h2>' + song.title + '</h2>';
+
+        $("#musicContainer").append(songTitle);
+
+        song.sections.forEach(function(section, sectionIdx) {
+          if (section.description) {
+            var description = '<h3>' + section.description + '</h3>';
+            $("#musicContainer").append(description);
+          }
+
+          var sectionHTML = ""
+
+          section.soundFiles.forEach(function(soundFile, fileIdx) {
+            sectionHTML += `
+                <tr>
+                    <td style="width: 300px;"><h4>${soundFile.description}</h4></td>
+                    <td>
+                    <section class="play-controls">
+                        <button id="btn-play${songIdx}-${sectionIdx}-${fileIdx}">&#9658;</button>
+                        <button id="btn-pause${songIdx}-${sectionIdx}-${fileIdx}">&#10074;&#10074;</button>
+                        <button id="btn-stop${songIdx}-${sectionIdx}-${fileIdx}">&#9724;</button>
+                    </section>
+                    </td>
+                </tr>
+                `;
+          });
+
+          $("#musicContainer").append("<table>" + sectionHTML + "</table><br />");
+        });
+
+        song.sections.forEach(function(section, sectionIdx) {
+          section.soundFiles.forEach(function(soundFile, fileIdx) {
+            setupHowl(soundFile.src, `#btn-play${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-pause${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-stop${songIdx}-${sectionIdx}-${fileIdx}`);
+          });
+        });
+
       });
 
-      document.getElementById(idPause).addEventListener("click", function() {
-        // console.log(currentSound === sound, !currentSound.playLock)
-        // if (currentSound === sound && !currentSound.playLock) {
-        //   console.log("play again?")
-        //   // console.log(currentSound.play)
-        //   sound.play();
-        // }
-        sound.pause();
-      });
 
-      document.getElementById(idStop).addEventListener("click", function() {
-        sound.stop();
-        if (currentSound === sound) {
-          currentSound = null;
-        }
-      });
+      var currentSound = null;
 
-      document.getElementById(idPlay).innerHTML = '&#9658;'; // play 
-      document.getElementById(idPause).innerHTML = '&#10074;&#10074;'; // pause
-      document.getElementById(idStop).innerHTML = '&#9724;'; // stop
-    }
+      function setupHowl(src, idPlay, idPause, idStop) {
 
-    setupHowl("assets/Barry Bonds drum-loop.mp3", "btn-play1", "btn-pause1", "btn-stop1");
-    setupHowl("assets/Barry Bonds loop-w-gtr.mp3", "btn-play2", "btn-pause2", "btn-stop2");
-    setupHowl("assets/Barry Bonds drum-loop-slow.mp3", "btn-play3", "btn-pause3", "btn-stop3");
-    setupHowl("assets/Barry Bonds loop-w-gtr-slow.mp3", "btn-play4", "btn-pause4", "btn-stop4");
-    setupHowl("assets/Barry Bonds loop-w-counting-slow.mp3", "btn-play5", "btn-pause5", "btn-stop5");
+        var sound = new Howl({
+          src: [src],
+          loop: true
+        });
 
-    setupHowl("assets/Barry Bonds to-hook-no-gtr.mp3", "btn-play6", "btn-pause6", "btn-stop6");
-    setupHowl("assets/Barry Bonds to-hook-w-gtr.mp3", "btn-play7", "btn-pause7", "btn-stop7");
-    setupHowl("assets/Barry Bonds to-hook-no-gtr-slow.mp3", "btn-play8", "btn-pause8", "btn-stop8");
-    setupHowl("assets/Barry Bonds to-hook-w-gtr-slow.mp3", "btn-play9", "btn-pause9", "btn-stop9");
+        $(idPlay).on("click", function() {
+          if (currentSound?.playing()) {
+            currentSound.stop();
+          }
+          sound.play();
+          currentSound = sound;
+        });
+
+        $(idPause).on("click", function() {
+          sound.pause();
+        });
+
+        $(idStop).on("click", function() {
+          sound.stop();
+          if (currentSound === sound) {
+            currentSound = null;
+          }
+        });
+      }
+    });
   </script>
 </body>
 
