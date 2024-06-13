@@ -5,59 +5,7 @@
   <title>Tanur - Music Player</title>
   <script src="howler.js-master/dist/howler.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <style>
-    body {
-      background-color: hsl(210, 6%, 12%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-      color: #8a8a8a;
-      font-family: Arial, sans-serif;
-    }
-
-    .card {
-      background-color: #2a2c2e;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 20px;
-      min-width: 50%;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    h2,
-    button {
-      color: #eaca4c;
-    }
-
-    h1,
-    h3,
-    h4 {
-      color: #d2d1d1;
-      /* display: inline; */
-    }
-
-    button {
-      background-color: #0a0c0d;
-      border: none;
-      padding: 10px;
-      margin: 5px;
-      font-size: 18px;
-      text-align: center;
-      border-radius: 5px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    button:hover {
-      background-color: #eaca4c;
-      color: #0a0c0d;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="icon" href="music-note.png">
 </head>
 
@@ -160,36 +108,51 @@
 
         song.sections.forEach(function(section, sectionIdx) {
           section.soundFiles.forEach(function(soundFile, fileIdx) {
-            setupHowl(soundFile.src, `#btn-play${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-pause${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-stop${songIdx}-${sectionIdx}-${fileIdx}`);
+            setupHowl(soundFile.src, `#btn-play${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-pause${songIdx}-${sectionIdx}-${fileIdx}`, `#btn-stop${songIdx}-${sectionIdx}-${fileIdx}`, soundFile.oneshot);
           });
         });
 
       });
 
-
       var currentSound = null;
 
-      function setupHowl(src, idPlay, idPause, idStop) {
-
+      function setupHowl(src, idPlay, idPause, idStop, oneshot = false) {
         var sound = new Howl({
           src: [src],
-          loop: true
+          loop: !oneshot
         });
 
         $(idPlay).on("click", function() {
           if (currentSound?.playing()) {
             currentSound.stop();
+            $(currentSound.controls).removeClass("playing");
           }
           sound.play();
           currentSound = sound;
+          currentSound.controls = $(this).closest(".play-controls");
+          $(currentSound.controls).addClass("playing");
         });
 
         $(idPause).on("click", function() {
-          sound.pause();
+          if (currentSound === sound) {
+            if (sound.playing()) {
+              sound.pause();
+            } else {
+              sound.play();
+            }
+          }
         });
 
         $(idStop).on("click", function() {
           sound.stop();
+          $(sound.controls).removeClass("playing");
+          if (currentSound === sound) {
+            currentSound = null;
+          }
+        });
+
+        sound.on('end', function() {
+          $(sound.controls).removeClass("playing");
           if (currentSound === sound) {
             currentSound = null;
           }
