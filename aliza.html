@@ -157,12 +157,16 @@
           }
         });
 
-        sound.on('end', function() {
-          $(sound.controls).removeClass("playing");
-          if (currentSound === sound) {
-            currentSound = null;
-          }
-        });
+        if (oneshot) {
+          sound.on('end', function() {
+            console.log("end");
+            $(sound.controls).removeClass("playing");
+            if (currentSound === sound) {
+              currentSound = null;
+            }
+          });
+        }
+
       }
 
     });
