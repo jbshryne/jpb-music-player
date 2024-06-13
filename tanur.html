@@ -67,10 +67,12 @@
             description: "Original track from the album 'Nimrod' (1997)",
             soundFiles: [{
               description: "Main chord sequence",
-              src: "assets/Green Day sequence.mp3"
+              src: "assets/Green Day sequence.mp3",
+              oneshot: true
             }, {
               description: "Full song",
-              src: "assets/Green Day full-song.mp3"
+              src: "assets/Green Day full-song.mp3",
+              oneshot: true
             }]
           }]
         }
@@ -154,7 +156,6 @@
 
         if (oneshot) {
           sound.on('end', function() {
-            console.log("end");
             $(sound.controls).removeClass("playing");
             if (currentSound === sound) {
               currentSound = null;
