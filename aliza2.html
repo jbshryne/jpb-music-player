@@ -2,94 +2,172 @@
 <html>
 
 <head>
-  <title>Tanur - Music Player</title>
+  <title>Aliza - Music Player</title>
   <script src="howler.js-master/dist/howler.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css">
-  <link rel="icon" href="music-note.png">
 
   <style>
     body {
+      color: #f0f0f0;
       font-family: 'Roboto', sans-serif;
+      padding: 20px;
+    }
+
+    h2 {
+      font-weight: 500;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-weight: 500;
+      font-size: 1.3rem;
+      margin: 1rem 0;
+      /* border-bottom: 1px solid #f0f0f0; */
+      padding-bottom: 5px;
+    }
+
+    h4 {
+      font-weight: 400;
+      font-size: 1rem;
+    }
+
+    table {
+      width: 100%;
+    }
+
+    td {
+      padding: 10px;
+    }
+
+    .play-controls button {
+      background-color: #0a0c0d;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      font-size: 18px;
+      transition: color 0.3s;
+      transition: background-color 0.2s;
+      color: #eaca4c;
+      user-select: none;
+    }
+
+    .play-controls button:hover {
+      background-color: #29210e;
+    }
+
+    .play-controls button svg {
+      width: 22px;
+      height: 22px;
+      vertical-align: middle;
+    }
+
+    @keyframes playing-animation {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.2;
+      }
+    }
+
+    .playing {
+      animation: playing-animation 1.7s infinite ease-out;
     }
   </style>
+  <link rel="icon" href="music-note.png">
 </head>
 
 <body>
-  <h2 style="color: white">Tanur's files</h2>
+  <h2 style="color: #d2d1d1;">Aliza's files</h2>
   <div id="musicContainer" class="card"></div>
 
   <script>
     $(document).ready(function() {
-      var icons = {
+      const icons = {
         play: '<svg class="play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.48.277-1.074-.068-1.074-.696V4.307c0-.628.594-.973 1.074-.696l6.363 3.692a.802.802 0 0 1 0 1.394z"/></svg>',
         pause: '<svg class="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A.5.5 0 0 0 5 4v8a.5.5 0 0 0 .5.5h1A.5.5 0 0 0 7 12V4a.5.5 0 0 0-.5-.5h-1zm4 0A.5.5 0 0 0 9 4v8a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V4a.5.5 0 0 0-.5-.5h-1z"/></svg>',
         stop: '<svg class="stop-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-stop-fill" viewBox="0 0 16 16"><path d="M5.5 5A1.5 1.5 0 0 0 4 6.5v3A1.5 1.5 0 0 0 5.5 11h5a1.5 1.5 0 0 0 1.5-1.5v-3A1.5 1.5 0 0 0 10.5 5h-5z"/></svg>',
         restart: '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-skip-backward-fill playing" viewBox="0 0 16 16"><path d="M8.21 9.468V11.5a.5.5 0 0 1-.79.407L3.5 9.486v2.014A.5.5 0 0 1 3 12h-2a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2.014L7.42 4.093A.5.5 0 0 1 8.21 4.5v2.032L12.21 4.093A.5.5 0 0 1 13 4.5v7.001a.5.5 0 0 1-.79.407L8.21 9.468z"/></svg>'
       };
 
+      const $playButton = $(`<button>${icons.play}</button>`);
+
       var songs = [{
-          title: "Barry Bonds - Kanye West",
+          title: "Other Side - Greatest Showman",
           sections: [{
-            description: "Main groove [Drums]",
+              description: "Full demo [Piano & Drums]",
+              soundFiles: [{
+                description: "Verse & Chorus",
+                src: "assets/Other Side full, with piano, normal tempo.mp3",
+                oneshot: true
+              }]
+            },
+            {
+              description: "Chorus only [Piano & Drums]",
+              soundFiles: [{
+                  description: "w/ LH loud (slower tempo)",
+                  src: "assets/Other Side chorus, LH only.mp3",
+                  oneshot: true
+                },
+                {
+                  description: "w/ RH loud (slower tempo)",
+                  src: "assets/Other Side chorus, RH only.mp3",
+                  oneshot: true
+                },
+                {
+                  description: "Quiet piano (slower tempo)",
+                  src: "assets/Other Side chorus, just drums, slower.mp3",
+                  oneshot: true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: "Never Enough - Greatest Showman",
+          sections: [{
+            description: "Demos by section [Piano]",
             soundFiles: [{
-                description: "Drum loop (normal tempo)",
-                src: "assets/Barry Bonds drum-loop.mp3"
+                description: "Intro",
+                src: "assets/Never Enough intro.mp3",
+                oneshot: true
               },
               {
-                description: "Loop w/ guitar part (normal tempo)",
-                src: "assets/Barry Bonds loop-w-gtr.mp3"
+                description: "Verse",
+                src: "assets/Never Enough verse.mp3",
+                oneshot: true
               },
               {
-                description: "Drum loop (slower tempo)",
-                src: "assets/Barry Bonds drum-loop-slow.mp3"
+                description: "Pre-Chorus",
+                src: "assets/Never Enough prechorus.mp3",
+                oneshot: true
               },
               {
-                description: "Loop w/ guitar part (slower tempo)",
-                src: "assets/Barry Bonds loop-w-gtr-slow.mp3"
+                description: "Chorus A",
+                src: "assets/Never Enough chorus A.mp3",
+                oneshot: true
               },
               {
-                description: "Loop w/ counting (slower tempo)",
-                src: "assets/Barry Bonds loop-w-counting-slow.mp3"
-              }
-            ]
-          }, {
-            description: "Groove x2 into hook [Drums, Bass, Elec Piano, Synth Strs & Brass]",
-            soundFiles: [{
-                description: "No guitar (normal tempo)",
-                src: "assets/Barry Bonds to-hook-no-gtr.mp3"
+                description: "Chorus B",
+                src: "assets/Never Enough chorus B.mp3",
+                oneshot: true
               },
               {
-                description: "With guitar (normal tempo)",
-                src: "assets/Barry Bonds to-hook-w-gtr.mp3"
-              },
-              {
-                description: "No guitar (slower tempo)",
-                src: "assets/Barry Bonds to-hook-no-gtr-slow.mp3"
-              },
-              {
-                description: "With guitar (slower tempo)",
-                src: "assets/Barry Bonds to-hook-w-gtr-slow.mp3"
+                description: "Full Song",
+                src: "assets/Never Enough full song.mp3",
+                oneshot: true
               }
             ]
           }]
         },
-        {
-          title: "Good Riddance (Time of Your Life) - Green Day",
-          sections: [{
-            description: "Original track from the album 'Nimrod' (1997)",
-            soundFiles: [{
-              description: "Main chord sequence",
-              src: "assets/Green Day sequence.mp3",
-              oneshot: true
-            }, {
-              description: "Full song",
-              src: "assets/Green Day full-song.mp3",
-              oneshot: true
-            }]
-          }]
-        }
       ];
 
       songs.forEach(function(song, songIdx) {
@@ -129,15 +207,6 @@
 
       var currentSound = null;
 
-      function resetAllPlayButtons() {
-        $(".btn-play").html(icons.play);
-      }
-
-      function resetAllPauseIcons() {
-        $(".pause-icon").removeClass("playing");
-      }
-
-
       function setupHowl(src, idPlay, idPause, idStop, oneshot = false) {
         var sound = new Howl({
           src: [src],
@@ -149,6 +218,8 @@
         var $stopIcon = $($(idStop).find("svg")[0]);
 
         var $playButton = $(idPlay);
+        var $allPlayButtons = $(".btn-play");
+        var $allPauseIcons = $(".pause-icon");
 
         $(idPlay).on("click", function() {
           if (currentSound?.playing()) {
@@ -160,8 +231,8 @@
           sound.play();
           currentSound = sound;
 
-          resetAllPlayButtons();
-          resetAllPauseIcons();
+          $allPlayButtons.html(icons.play);
+          $allPauseIcons.removeClass("playing");
 
           $playButton.html(icons.restart);
           $playIcon.addClass("playing");
@@ -205,6 +276,7 @@
         }
 
       }
+
     });
   </script>
 </body>

@@ -5,16 +5,32 @@
   <title>Aliza - Music Player</title>
   <script src="howler.js-master/dist/howler.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="style.css">
   <link rel="icon" href="music-note.png">
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
 </head>
 
 <body>
-  <h2 style="color: white">Aliza's files</h2>
+  <h2 style="color: #d2d1d1;">Aliza's files</h2>
   <div id="musicContainer" class="card"></div>
 
   <script>
     $(document).ready(function() {
+      var icons = {
+        play: '<svg class="play-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.48.277-1.074-.068-1.074-.696V4.307c0-.628.594-.973 1.074-.696l6.363 3.692a.802.802 0 0 1 0 1.394z"/></svg>',
+        pause: '<svg class="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A.5.5 0 0 0 5 4v8a.5.5 0 0 0 .5.5h1A.5.5 0 0 0 7 12V4a.5.5 0 0 0-.5-.5h-1zm4 0A.5.5 0 0 0 9 4v8a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V4a.5.5 0 0 0-.5-.5h-1z"/></svg>',
+        stop: '<svg class="stop-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-stop-fill" viewBox="0 0 16 16"><path d="M5.5 5A1.5 1.5 0 0 0 4 6.5v3A1.5 1.5 0 0 0 5.5 11h5a1.5 1.5 0 0 0 1.5-1.5v-3A1.5 1.5 0 0 0 10.5 5h-5z"/></svg>',
+        restart: '<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-skip-backward-fill playing" viewBox="0 0 16 16"><path d="M8.21 9.468V11.5a.5.5 0 0 1-.79.407L3.5 9.486v2.014A.5.5 0 0 1 3 12h-2a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v2.014L7.42 4.093A.5.5 0 0 1 8.21 4.5v2.032L12.21 4.093A.5.5 0 0 1 13 4.5v7.001a.5.5 0 0 1-.79.407L8.21 9.468z"/></svg>'
+      };
+
+      var $playButton = $(`<button>${icons.play}</button>`);
+
       var songs = [{
           title: "Other Side - Greatest Showman",
           sections: [{
@@ -83,7 +99,7 @@
             ]
           }]
         },
-      ]
+      ];
 
       songs.forEach(function(song, songIdx) {
         var songTitle = '<h2>' + song.title + '</h2>';
@@ -102,9 +118,9 @@
                 <td style="width: 300px;"><h4>${soundFile.description}</h4></td>
                 <td>
                   <section class="play-controls">
-                    <button id="btn-play${songIdx}-${sectionIdx}-${fileIdx}">&#9658;</button>
-                    <button id="btn-pause${songIdx}-${sectionIdx}-${fileIdx}">&#10074;&#10074;</button>
-                    <button id="btn-stop${songIdx}-${sectionIdx}-${fileIdx}">&#9724;</button>
+                    <button class="btn-play" id="btn-play${songIdx}-${sectionIdx}-${fileIdx}" title="Play">${icons.play}</button>
+                    <button id="btn-pause${songIdx}-${sectionIdx}-${fileIdx}" title="Pause">${icons.pause}</button>
+                    <button id="btn-stop${songIdx}-${sectionIdx}-${fileIdx}" title="Stop">${icons.stop}</button>
                   </section>
                 </td>
               </tr>`;
@@ -122,44 +138,74 @@
 
       var currentSound = null;
 
+      function resetAllPlayButtons() {
+        $(".btn-play").html(icons.play);
+      }
+
+      function resetAllPauseIcons() {
+        $(".pause-icon").removeClass("playing");
+      }
+
       function setupHowl(src, idPlay, idPause, idStop, oneshot = false) {
         var sound = new Howl({
           src: [src],
           loop: !oneshot
         });
 
+        var $playIcon = $($(idPlay).find("svg")[0]);
+        var $pauseIcon = $($(idPause).find("svg")[0]);
+        var $stopIcon = $($(idStop).find("svg")[0]);
+
+        var $playButton = $(idPlay);
+
         $(idPlay).on("click", function() {
           if (currentSound?.playing()) {
             currentSound.stop();
-            $(currentSound.controls).removeClass("playing");
+            $playIcon.removeClass("playing");
+          } else {
+            $pauseIcon.removeClass("playing");
           }
           sound.play();
           currentSound = sound;
-          currentSound.controls = $(this).closest(".play-controls");
-          $(currentSound.controls).addClass("playing");
+
+          resetAllPlayButtons();
+          resetAllPauseIcons();
+
+          $playButton.html(icons.restart);
+          $playIcon.addClass("playing");
         });
 
         $(idPause).on("click", function() {
           if (currentSound === sound) {
             if (sound.playing()) {
               sound.pause();
+              $playIcon.removeClass("playing");
+              $pauseIcon.addClass("playing");
+              $playButton.html(icons.play);
             } else {
+              console.log("sound is paused");
               sound.play();
+              $pauseIcon.removeClass("playing");
+              $playIcon.addClass("playing");
+              $playButton.html(icons.restart);
             }
           }
         });
 
         $(idStop).on("click", function() {
-          sound.stop();
-          $(sound.controls).removeClass("playing");
           if (currentSound === sound) {
+            sound.stop();
+            $playIcon.removeClass("playing");
+            $pauseIcon.removeClass("playing");
+            $playButton.html(icons.play);
             currentSound = null;
           }
         });
 
         if (oneshot) {
           sound.on('end', function() {
-            $(sound.controls).removeClass("playing");
+            $playIcon.removeClass("playing");
+            $playButton.html(icons.play);
             if (currentSound === sound) {
               currentSound = null;
             }
